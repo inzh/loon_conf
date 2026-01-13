@@ -145,6 +145,92 @@ def process_china_dns_ip() -> None:
     print(f"ChinaDNS_IP: 共 {len(rules)} 条规则 -> {output_path}")
 
 
+def process_global_dns_domain() -> None:
+    """
+    处理 GlobalDNS_Domain.yaml
+    
+    规则格式: - '+.dns.google'    # comment
+    输出格式: DOMAIN-SUFFIX,dns.google
+    """
+    url = f"{BASE_URL}/GlobalDNS/GlobalDNS_Domain.yaml"
+    content = download_file(url)
+    
+    rules = []
+    for line in content.splitlines():
+        # 跳过空行
+        if not line.strip():
+            continue
+        
+        # 跳过纯注释行（整行以 # 开头）
+        if line.strip().startswith("#"):
+            continue
+        
+        # 跳过不包含 "-" 的行
+        if "-" not in line:
+            continue
+        
+        # 提取 "-" 后面引号内的字符串
+        match = re.search(r"-\s*['\"](.+?)['\"]", line)
+        if not match:
+            continue
+        
+        domain = match.group(1)
+        
+        # 去除 "+." 前缀
+        if domain.startswith("+."):
+            domain = domain[2:]
+        
+        rules.append(f"DOMAIN-SUFFIX,{domain}")
+    
+    output_path = Path.cwd() / "GlobalDNS_Domain.list"
+    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
+    print(f"GlobalDNS_Domain: 共 {len(rules)} 条规则 -> {output_path}")
+
+
+def process_global_dns_ip() -> None:
+    """
+    处理 GlobalDNS_IP.yaml
+    
+    规则格式: - '8.8.8.8/32'    # comment 或 - '2001:4860:4860::8888/128'    # comment
+    输出格式: IP-CIDR,8.8.8.8/32,no-resolve 或 IP-CIDR6,2001:4860:4860::8888/128
+    """
+    url = f"{BASE_URL}/GlobalDNS/GlobalDNS_IP.yaml"
+    content = download_file(url)
+    
+    rules = []
+    for line in content.splitlines():
+        # 跳过空行
+        if not line.strip():
+            continue
+        
+        # 跳过纯注释行（整行以 # 开头）
+        if line.strip().startswith("#"):
+            continue
+        
+        # 跳过不包含 "-" 的行
+        if "-" not in line:
+            continue
+        
+        # 提取 "-" 后面引号内的字符串
+        match = re.search(r"-\s*['\"](.+?)['\"]", line)
+        if not match:
+            continue
+        
+        ip_cidr = match.group(1)
+        
+        # 判断是 IPv6 还是 IPv4
+        if ":" in ip_cidr:
+            # IPv6
+            rules.append(f"IP-CIDR6,{ip_cidr}")
+        else:
+            # IPv4
+            rules.append(f"IP-CIDR,{ip_cidr},no-resolve")
+    
+    output_path = Path.cwd() / "GlobalDNS_IP.list"
+    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
+    print(f"GlobalDNS_IP: 共 {len(rules)} 条规则 -> {output_path}")
+
+
 def main():
     print("=" * 50)
     print("开始同步规则文件")
@@ -153,6 +239,8 @@ def main():
     process_geosite_cn()
     process_china_dns_domain()
     process_china_dns_ip()
+    process_global_dns_domain()
+    process_global_dns_ip()
     
     print("=" * 50)
     print("同步完成")
