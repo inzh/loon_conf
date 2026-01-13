@@ -63,7 +63,7 @@ def process_china_dns_domain() -> None:
     """
     处理 ChinaDNS_Domain.yaml
     
-    规则格式: - '+.dns.cn' 或 - 'dns.114dns.com'
+    规则格式: - '+.dns.cn'    # comment 或 - 'dns.114dns.com'    # comment
     输出格式: DOMAIN-SUFFIX,dns.cn
     """
     url = f"{BASE_URL}/ChinaDNS/ChinaDNS_Domain.yaml"
@@ -71,15 +71,19 @@ def process_china_dns_domain() -> None:
     
     rules = []
     for line in content.splitlines():
-        # 跳过包含 "#" 的行
-        if "#" in line:
+        # 跳过空行
+        if not line.strip():
+            continue
+        
+        # 跳过纯注释行（整行以 # 开头）
+        if line.strip().startswith("#"):
             continue
         
         # 跳过不包含 "-" 的行
         if "-" not in line:
             continue
         
-        # 提取 "-" 后面的字符串
+        # 提取 "-" 后面引号内的字符串
         match = re.search(r"-\s*['\"](.+?)['\"]", line)
         if not match:
             continue
@@ -101,7 +105,7 @@ def process_china_dns_ip() -> None:
     """
     处理 ChinaDNS_IP.yaml
     
-    规则格式: - '114.114.114.114/32' 或 - '240c::6666/64'
+    规则格式: - '114.114.114.114/32'    # comment 或 - '240c::6666/64'    # comment
     输出格式: IP-CIDR,114.114.114.114/32,no-resolve 或 IP-CIDR6,240c::6666/64
     """
     url = f"{BASE_URL}/ChinaDNS/ChinaDNS_IP.yaml"
@@ -109,15 +113,19 @@ def process_china_dns_ip() -> None:
     
     rules = []
     for line in content.splitlines():
-        # 跳过包含 "#" 的行
-        if "#" in line:
+        # 跳过空行
+        if not line.strip():
+            continue
+        
+        # 跳过纯注释行（整行以 # 开头）
+        if line.strip().startswith("#"):
             continue
         
         # 跳过不包含 "-" 的行
         if "-" not in line:
             continue
         
-        # 提取 "-" 后面的字符串
+        # 提取 "-" 后面引号内的字符串
         match = re.search(r"-\s*['\"](.+?)['\"]", line)
         if not match:
             continue
