@@ -64,8 +64,8 @@ def main():
     print("正在提取规则...")
     rules = extract_rules(content)
     
-    # 写入输出文件
-    output_path = Path(__file__).parent.parent / OUTPUT_FILE
+    # 写入输出文件（直接输出到当前工作目录，即仓库根目录）
+    output_path = Path.cwd() / OUTPUT_FILE
     output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
     
     print(f"处理完成，共 {len(rules)} 条规则")
