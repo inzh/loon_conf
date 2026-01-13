@@ -231,6 +231,47 @@ def process_global_dns_ip() -> None:
     print(f"GlobalDNS_IP: 共 {len(rules)} 条规则 -> {output_path}")
 
 
+def process_block_http_dns_plus() -> None:
+    """
+    处理 BlockHttpDNSPlus_No_Resolve.yaml
+    
+    规则格式: - DOMAIN-KEYWORD , httpsdns    # comment
+    输出格式: DOMAIN-KEYWORD,httpsdns
+    """
+    url = f"{BASE_URL}/BlockHttpDNSPlus/BlockHttpDNSPlus_No_Resolve.yaml"
+    content = download_file(url)
+    
+    rules = []
+    for line in content.splitlines():
+        # 跳过空行
+        if not line.strip():
+            continue
+        
+        # 跳过注释行（整行以 # 开头）
+        if line.strip().startswith("#"):
+            continue
+        
+        # 跳过不包含 "-" 的行
+        if "-" not in line:
+            continue
+        
+        # 移除行尾注释
+        line = re.sub(r"#.*$", "", line)
+        
+        # 移除前导 "- " 符号
+        line = re.sub(r"^\s*-\s*", "", line)
+        
+        # 移除所有空格
+        line = line.replace(" ", "")
+        
+        if line:
+            rules.append(line)
+    
+    output_path = Path.cwd() / "BlockHttpDNSPlus.list"
+    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
+    print(f"BlockHttpDNSPlus: 共 {len(rules)} 条规则 -> {output_path}")
+
+
 def main():
     print("=" * 50)
     print("开始同步规则文件")
@@ -241,6 +282,7 @@ def main():
     process_china_dns_ip()
     process_global_dns_domain()
     process_global_dns_ip()
+    process_block_http_dns_plus()
     
     print("=" * 50)
     print("同步完成")

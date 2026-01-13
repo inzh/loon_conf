@@ -29,6 +29,6 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add GeositeCN.list ChinaDNS_Domain.list ChinaDNS_IP.list GlobalDNS_Domain.list GlobalDNS_IP.list
+          git add GeositeCN.list ChinaDNS_Domain.list ChinaDNS_IP.list GlobalDNS_Domain.list GlobalDNS_IP.list BlockHttpDNSPlus.list
           git commit -m "chore: 更新 GeositeCN 规则列表 $(date +'%Y-%m-%d')" --allow-empty
           git push
