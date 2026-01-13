@@ -1,0 +1,104 @@
+[General]
+ip-mode=v4-only
+ipv6-vif=off
+dns-server=system
+doh-server = https://dns.alidns.com/dns-query,https://doh.pub/dns-query
+doq-server = quic://223.5.5.5:853,quic://223.6.6.6:853
+doh3-server = h3://223.5.5.5/dns-query,h3://223.6.6.6/dns-query
+sni-sniffing=true
+disable-stun=true
+dns-reject-mode=LoopbackIP
+domain-reject-mode=DNS
+udp-fallback-mode=REJECT
+allow-wifi-access=false
+wifi-access-http-port=7222
+wifi-access-socks5-port=7221
+interface-mode=auto
+test-timeout=5
+disconnect-on-policy-change=false
+internet-test-url=http://connectivitycheck.platform.hicloud.com/generate_204
+proxy-test-url=http://www.gstatic.com/generate_204
+resource-parser=https://raw.githubusercontent.com/sub-store-org/Sub-Store/release/sub-store-parser.loon.min.js
+geoip-url=https://geodata.kelee.one/Country-Masaiki.mmdb
+ipasn-url=https://geodata.kelee.one/GeoLite2-ASN-P3TERX.mmdb
+bypass-tun=10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.0.0/24, 192.0.2.0/24, 192.88.99.0/24, 192.168.0.0/16, 198.51.100.0/24, 203.0.113.0/24, 224.0.0.0/4, 255.255.255.255/32
+skip-proxy=192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, e.crashlynatics.com
+real-ip = *.apple.com,*.icloud.com,*.lan,*.localdomain,*.example,*.invalid,*.localhost,*.test,*.local,*.home.arpa,*.direct,time.*.com,time.*.gov,time.*.edu.cn,time.*.apple.com,time-ios.apple.com,time1.*.com,time2.*.com,time3.*.com,time4.*.com,time5.*.com,time6.*.com,time7.*.com,ntp.*.com,ntp1.*.com,ntp2.*.com,ntp3.*.com,ntp4.*.com,ntp5.*.com,ntp6.*.com,ntp7.*.com,*.time.edu.cn,*.ntp.org.cn,+.pool.ntp.org,time1.cloud.tencent.com,music.163.com,*.music.163.com,*.126.net,musicapi.taihe.com,music.taihe.com,songsearch.kugou.com,trackercdn.kugou.com,*.kuwo.cn,api-jooxtt.sanook.com,api.joox.com,joox.com,y.qq.com,*.y.qq.com,streamoc.music.tc.qq.com,mobileoc.music.tc.qq.com,isure.stream.qqmusic.qq.com,dl.stream.qqmusic.qq.com,aqqmusic.tc.qq.com,amobile.music.tc.qq.com,*.xiami.com,*.music.migu.cn,music.migu.cn,+.msftconnecttest.com,+.msftncsi.com,localhost.ptlogin2.qq.com,localhost.sec.qq.com,localhost.*.weixin.qq.com,+.kk-rays.com,+.steamcontent.com,+.srv.nintendo.net,*.n.n.srv.nintendo.net,+.cdn.nintendo.net,xbox.*.*.microsoft.com,*.*.xboxlive.com,xbox.*.microsoft.com,xnotify.xboxlive.com,+.battle.net,+.battlenet.com.cn,+.wotgame.cn,+.wggames.cn,+.wowsgame.cn,+.wargaming.net,proxy.golang.org,+.stun.*.*,+.stun.*.*.*,+.stun.*.*.*.*,+.stun.*.*.*.*.*,heartbeat.belkin.com,*.linksys.com,*.linksyssmartwifi.com,*.router.asus.com,mesu.apple.com,swscan.apple.com,swquery.apple.com,swdownload.apple.com,swcdn.apple.com,swdist.apple.com,lens.l.google.com,na.b.g-tun.com,*.square-enix.com,*.finalfantasyxiv.com,*.ffxiv.com,*.ff14.sdo.com,ff.dorado.sdo.com,*.mcdn.bilivideo.cn,+.media.dssott.com,shark007.net,Mijia Cloud,+.market.xiaomi.com,+.cmbchina.com,+.cmbimg.com,adguardteam.github.io,adrules.top,anti-ad.net,local.adguard.org,+.sandai.net,+.n0808.com,+.3gppnetwork.org,+.uu.163.com,ps.res.netease.com,+.pub.3gppnetwork.org,+.oray.com,+.orayimg.com,+.gcloudcs.com,+.gcloudsdk.com,+.dynv6.net
+
+[Proxy]
+
+[Remote Proxy]
+
+[Remote Filter]
+HK_NODES=NameRegex, FilterKey="^(?=.*((?i)🇭🇰|香港|(\b(HK|HKG|Hong)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$"
+SG_NODES=NameRegex, FilterKey="^(?=.*((?i)🇸🇬|新加坡|狮|(\b(SG|SGP|Singapore)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$"
+US_NODES=NameRegex, FilterKey="^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|USA|United States)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$"
+ALL_NODES=NameRegex, FilterKey="^(?=.*(.))(?!.*((?i)群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|邀请|好友|失联|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic)(\d+)?\b|(\d{4}-\d{2}-\d{2}|\dG)))).*$"
+
+[Proxy Group]
+手动选择=select, ALL_NODES, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
+社交媒体=select, ALL_NODES, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Twitter.png
+苹果服务=select, DIRECT, 手动选择, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Apple.png
+Spotify=select, HK, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Spotify.png
+AI=select, ALL_NODES, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+SpeedTest=select, DIRECT, 手动选择, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Speedtest.png
+Binance=select, SG, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bitcloud.png
+HK=select, HK_NODES, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/HK.png
+SG=select, SG_NODES, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/SG.png
+US=select, US_NODES, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/US.png
+
+
+[Rule]
+# 兜底
+FINAL,手动选择
+
+[Remote Rule]
+https://kelee.one/Tool/Loon/Lsr/LAN_SPLITTER.lsr, policy=DIRECT, tag=lan, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/GlobalDNS_Domain.list, policy=手动选择, tag=global_dns, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/GlobalDNS_IP.list, policy=手动选择, tag=global_dns, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/ChinaDNS_Domain.list, policy=DIRECT, tag=china_dns, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/ChinaDNS_IP.list, policy=DIRECT, tag=china_dns, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Loon/BlockHttpDNS/BlockHttpDNS.list, policy=REJECT, tag=block_httpdns, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/BlockHttpDNSPlus.list, policy=REJECT, tag=block_httpdns, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Loon/Hijacking/Hijacking.list, policy=REJECT, tag=block_Hijacking, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/HijackingPlus.list, policy=REJECT, tag=block_Hijacking, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/PreRepairEasyPrivacy.list, policy=REJECT, tag=block_Privacy, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/ddgksf2013/Filter/master/Unbreak.list, policy=DIRECT, tag=cn, enabled=true
+https://whatshub.top/rule/WeChat.list, policy=DIRECT, tag=cn, enabled=true
+https://whatshub.top/rule/BiliBili.list, policy=DIRECT, tag=cn, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/ddgksf2013/Filter/master/StreamingSE.list, policy=DIRECT, tag=cn, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/inzh/loon_conf/refs/heads/master/GeositeCN.list, policy=DIRECT, tag=cn, enabled=true
+https://whatshub.top/rule/Twitter.list, policy=社交媒体, tag=social_media, enabled=true
+https://whatshub.top/rule/Facebook.list, policy=社交媒体, tag=social_media, enabled=true
+https://whatshub.top/rule/Reddit.list, policy=社交媒体, tag=social_media, enabled=true
+https://whatshub.top/rule/AppStore.list, policy=苹果服务, tag=apple, enabled=true
+https://whatshub.top/rule/Apple.list, policy=苹果服务, tag=apple, enabled=true
+https://whatshub.top/rule/Spotify.list, policy=Spotify, tag=spotify, enabled=true
+https://kelee.one/Tool/Loon/Lsr/AI.lsr, policy=AI, tag=ai, enabled=true
+https://whatshub.top/rule/Speedtest.list, policy=SpeedTest, tag=SpeedTest, enabled=true
+https://whatshub.top/rule/Binance.list, policy=Binance, tag=Binance, enabled=true
+https://kelee.one/Tool/Loon/Lsr/REGION_SPLITTER.lsr, policy=DIRECT, tag=cn, enabled=true
+https://ghfast.top/https://raw.githubusercontent.com/VirgilClyne/GetSomeFries/main/ruleset/ASN.China.list, policy=DIRECT, tag=cn, enabled=true
+
+
+[Host]
+
+[Rewrite]
+
+[Script]
+
+[Plugin]
+https://kelee.one/Tool/Loon/Lpx/Block_HTTPDNS.lpx, pin=true, enabled=true
+https://kelee.one/Tool/Loon/Lpx/BlockAdvertisers.lpx, pin=true, enabled=true
+https://kelee.one/Tool/Loon/Lpx/QuickSearch.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Node_detection_tool.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/TestFlightRegionUnlock.lpx, policy=DIRECT, enabled=false
+https://kelee.one/Tool/Loon/Lpx/BoxJs.lpx, policy=香港手动策略, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Sub-Store.lpx, policy=香港手动策略, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Script-Hub.lpx, policy=香港手动策略, enabled=true
+
+[Mitm]
+hostname=
+ca-p12=
+ca-passphrase=
+skip-server-cert-verify=false
