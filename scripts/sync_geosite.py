@@ -319,6 +319,53 @@ def process_hijacking_plus() -> None:
     print(f"HijackingPlus: 共 {len(rules)} 条规则 -> {output_path}")
 
 
+def process_pre_repair_easy_privacy() -> None:
+    """
+    处理 PreRepairEasyPrivacy_REJECT.yaml
+    
+    规则格式: - DOMAIN-KEYWORD, app-analytics    , REJECT-DROP
+    输出格式: DOMAIN-KEYWORD,app-analytics,REJECT
+    """
+    url = f"{BASE_URL}/PreRepairEasyPrivacy/PreRepairEasyPrivacy_REJECT.yaml"
+    content = download_file(url)
+    
+    rules = []
+    for line in content.splitlines():
+        # 跳过空行
+        if not line.strip():
+            continue
+        
+        # 跳过注释行（整行以 # 开头）
+        if line.strip().startswith("#"):
+            continue
+        
+        # 跳过不包含 "-" 的行
+        if "-" not in line:
+            continue
+        
+        # 移除行尾注释
+        line = re.sub(r"#.*$", "", line)
+        
+        # 移除前导 "- " 符号
+        line = re.sub(r"^\s*-\s*", "", line)
+        
+        # 移除所有空格
+        line = line.replace(" ", "")
+        
+        if not line:
+            continue
+        
+        # 移除 REJECT-DROP 后缀，替换为 REJECT
+        line = re.sub(r",REJECT-DROP$", "", line)
+        line = f"{line},REJECT"
+        
+        rules.append(line)
+    
+    output_path = Path.cwd() / "PreRepairEasyPrivacy.list"
+    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
+    print(f"PreRepairEasyPrivacy: 共 {len(rules)} 条规则 -> {output_path}")
+
+
 def main():
     print("=" * 50)
     print("开始同步规则文件")
@@ -331,6 +378,7 @@ def main():
     process_global_dns_ip()
     process_block_http_dns_plus()
     process_hijacking_plus()
+    process_pre_repair_easy_privacy()
     
     print("=" * 50)
     print("同步完成")
