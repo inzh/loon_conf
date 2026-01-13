@@ -355,9 +355,8 @@ def process_pre_repair_easy_privacy() -> None:
         if not line:
             continue
         
-        # # 移除 REJECT-DROP 后缀，替换为 REJECT
-        # line = re.sub(r",REJECT-DROP$", "", line)
-        # line = f"{line},REJECT"
+        # 移除 REJECT-DROP 后缀，替换为 REJECT
+        line = re.sub(r",REJECT-DROP$", "", line)
         
         rules.append(line)
     
