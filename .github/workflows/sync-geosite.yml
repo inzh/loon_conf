@@ -1,0 +1,40 @@
+name: Sync GeositeCN Rules
+
+on:
+  schedule:
+    # 每天 UTC 0:00 运行 (北京时间 8:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download and process GeositeCN.yaml
+        run: python scripts/sync_geosite.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # 检查是否有变化
+          if git diff --quiet GeositeCN.list 2>/dev/null; then
+            echo "没有变化，跳过提交"
+          else
+            git add GeositeCN.list
+            git commit -m "chore: 更新 GeositeCN 规则列表 $(date +'%Y-%m-%d')"
+            git push
+            echo "已提交更新"
+          fi
