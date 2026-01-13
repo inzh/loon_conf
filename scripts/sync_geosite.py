@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-从 Accademia/Additional_Rule_For_Clash 仓库下载 GeositeCN.yaml
-提取有效的 DOMAIN-SUFFIX 规则，保存为 GeositeCN.list
+从 Accademia/Additional_Rule_For_Clash 仓库下载规则文件并处理
 """
 
 import re
@@ -9,25 +8,27 @@ import urllib.request
 from pathlib import Path
 
 
-YAML_URL = "https://raw.githubusercontent.com/Accademia/Additional_Rule_For_Clash/main/GeositeCN/GeositeCN.yaml"
-OUTPUT_FILE = "GeositeCN.list"
+BASE_URL = "https://raw.githubusercontent.com/Accademia/Additional_Rule_For_Clash/main"
 
 
-def download_yaml(url: str) -> str:
-    """下载 YAML 文件内容"""
+def download_file(url: str) -> str:
+    """下载文件内容"""
+    print(f"正在下载: {url}")
     with urllib.request.urlopen(url) as response:
         return response.read().decode("utf-8")
 
 
-def extract_rules(content: str) -> list[str]:
+def process_geosite_cn() -> None:
     """
-    从 YAML 内容中提取有效规则
+    处理 GeositeCN.yaml
     
     规则格式: - DOMAIN-SUFFIX   , domain.com    # comment
     输出格式: DOMAIN-SUFFIX,domain.com
     """
-    rules = []
+    url = f"{BASE_URL}/GeositeCN/GeositeCN.yaml"
+    content = download_file(url)
     
+    rules = []
     for line in content.splitlines():
         # 跳过空行
         if not line.strip():
@@ -50,31 +51,104 @@ def extract_rules(content: str) -> list[str]:
         # 移除所有空格
         line = line.replace(" ", "")
         
-        # 跳过处理后的空行
         if line:
             rules.append(line)
     
-    return rules
+    output_path = Path.cwd() / "GeositeCN.list"
+    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
+    print(f"GeositeCN: 共 {len(rules)} 条规则 -> {output_path}")
+
+
+def process_china_dns_domain() -> None:
+    """
+    处理 ChinaDNS_Domain.yaml
+    
+    规则格式: - '+.dns.cn' 或 - 'dns.114dns.com'
+    输出格式: DOMAIN-SUFFIX,dns.cn
+    """
+    url = f"{BASE_URL}/ChinaDNS/ChinaDNS_Domain.yaml"
+    content = download_file(url)
+    
+    rules = []
+    for line in content.splitlines():
+        # 跳过包含 "#" 的行
+        if "#" in line:
+            continue
+        
+        # 跳过不包含 "-" 的行
+        if "-" not in line:
+            continue
+        
+        # 提取 "-" 后面的字符串
+        match = re.search(r"-\s*['\"](.+?)['\"]", line)
+        if not match:
+            continue
+        
+        domain = match.group(1)
+        
+        # 去除 "+." 前缀
+        if domain.startswith("+."):
+            domain = domain[2:]
+        
+        rules.append(f"DOMAIN-SUFFIX,{domain}")
+    
+    output_path = Path.cwd() / "ChinaDNS_Domain.list"
+    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
+    print(f"ChinaDNS_Domain: 共 {len(rules)} 条规则 -> {output_path}")
+
+
+def process_china_dns_ip() -> None:
+    """
+    处理 ChinaDNS_IP.yaml
+    
+    规则格式: - '114.114.114.114/32' 或 - '240c::6666/64'
+    输出格式: IP-CIDR,114.114.114.114/32,no-resolve 或 IP-CIDR6,240c::6666/64
+    """
+    url = f"{BASE_URL}/ChinaDNS/ChinaDNS_IP.yaml"
+    content = download_file(url)
+    
+    rules = []
+    for line in content.splitlines():
+        # 跳过包含 "#" 的行
+        if "#" in line:
+            continue
+        
+        # 跳过不包含 "-" 的行
+        if "-" not in line:
+            continue
+        
+        # 提取 "-" 后面的字符串
+        match = re.search(r"-\s*['\"](.+?)['\"]", line)
+        if not match:
+            continue
+        
+        ip_cidr = match.group(1)
+        
+        # 判断是 IPv6 还是 IPv4
+        if ":" in ip_cidr:
+            # IPv6
+            rules.append(f"IP-CIDR6,{ip_cidr}")
+        else:
+            # IPv4
+            rules.append(f"IP-CIDR,{ip_cidr},no-resolve")
+    
+    output_path = Path.cwd() / "ChinaDNS_IP.list"
+    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
+    print(f"ChinaDNS_IP: 共 {len(rules)} 条规则 -> {output_path}")
 
 
 def main():
-    print(f"正在下载: {YAML_URL}")
-    content = download_yaml(YAML_URL)
+    print("=" * 50)
+    print("开始同步规则文件")
+    print("=" * 50)
     
-    print("正在提取规则...")
-    rules = extract_rules(content)
+    process_geosite_cn()
+    process_china_dns_domain()
+    process_china_dns_ip()
     
-    # 写入输出文件（直接输出到当前工作目录，即仓库根目录）
-    output_path = Path.cwd() / OUTPUT_FILE
-    output_path.write_text("\n".join(rules) + "\n", encoding="utf-8")
-    
-    print(f"处理完成，共 {len(rules)} 条规则")
-    print(f"输出文件: {output_path}")
-    
-    # 显示前 5 条规则
-    print("\n前 5 条规则:")
-    for rule in rules[:5]:
-        print(f"  {rule}")
+    print("=" * 50)
+    print("同步完成")
+    print("=" * 50)
 
 
 if __name__ == "__main__":
